@@ -7,3 +7,7 @@
 ## Tercer paso
 
 Hacer un rebase desde la nueva branch de main
+
+## Cuarto paso.
+
+Voy a testear el git squash.
