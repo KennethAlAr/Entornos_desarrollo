@@ -3,3 +3,7 @@
 ## Primer paso 
 
 ## Segundo paso
+
+## Tercer paso
+
+Hacer un rebase desde la nueva branch de main
