@@ -15,3 +15,5 @@ aqui van las actividades
 # Conclusiones
 
 aqui van las conclusiones
+
+## Conflictos con stash
