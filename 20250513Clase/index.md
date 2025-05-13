@@ -11,3 +11,7 @@ aqui van los objetivos
 ## Actividades
 
 aqui van las actividades
+
+# Conclusiones
+
+aqui van las conclusiones
