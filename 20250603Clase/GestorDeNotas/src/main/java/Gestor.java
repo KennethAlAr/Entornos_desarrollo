@@ -14,7 +14,7 @@ Nuestro producto ha de permitir hacer lo siguiente:
 * Eliminar una nota de un alumno
 * Eliminar un alumno del diccionario
 * Listar las notas de un alumno
-* Listar los alumnos con su nota
+* Listar los alumnos con su nota media
 * Salir
 
  */
@@ -29,23 +29,26 @@ public class Gestor {
 
     /**
      * Función que construye el menú de la aplicación
-     * @return menu - String que contiene el menú de la aplicación a imprimir
+     * @return menu String que contiene el menú de la aplicación a imprimir
      */
     public static String menu() {
         String menu = "Escoge una opción:\n" +
                 "1. Añadir un alumno.\n" +
                 "2. Eliminar alumno.\n" +
                 "3. Añadir una nota.\n" +
-                "4. Consultar notas alumno.\n" +
-                "5. Salir.";
+                "4. Modificar una nota.\n" +
+                "5. Eliminar una nota.\n" +
+                "6. Consultar notas alumno.\n" +
+                "7. Consultar medias alumnos.\n" +
+                "8. Salir.";
         return menu;
     }
 
     /**
      * Función que añade un alumno en el diccionario si este no existe.
-     * @param nombre - Nombre del alumno
-     * @param notas - Lista de notas del alumno
-     * @throws IllegalArgumentException - El alumno ya existe en el sistema
+     * @param nombre Nombre del alumno
+     * @param notas Lista de notas del alumno
+     * @throws IllegalArgumentException El alumno ya existe en el sistema
      */
     public static String anadirAlumno(String nombre, ArrayList<Float> notas) {
         if (notasAlumnos.containsKey(nombre)) {
@@ -57,9 +60,9 @@ public class Gestor {
 
     /**
      * Función que añade una nota a un alumno que ya existe.
-     * @param nombre - nombre del alumno
-     * @param nota - nota del alumno
-     * @throws IllegalArgumentException - Alumno no existente en sistema
+     * @param nombre nombre del alumno
+     * @param nota nota del alumno
+     * @throws IllegalArgumentException Alumno no existente en sistema
      */
     public static String anadirNota(String nombre, Float nota) {
         if (!notasAlumnos.containsKey(nombre)) {
@@ -91,15 +94,67 @@ public class Gestor {
 
     /**
      * Función para eliminar un alumno.
-     * @param nombre
+     * @param nombre Nombre del alumno
      * @throws IllegalArgumentException Alumno no existente en el sistema
      */
     public static String eliminarAlumno(String nombre) {
         if (notasAlumnos.remove(nombre) == null) {
-            throw new IllegalArgumentException(("El alumno " + nombre + " no existe en el sistema."));
+            throw new IllegalArgumentException(("Alumno " + nombre + " no existe en el sistema."));
         }
         notasAlumnos.remove(nombre);
-        return "El alumno " + nombre + " eliminado correctamente.";
+        return "Alumno " + nombre + " eliminado correctamente.";
+    }
+
+    /**
+     * Función para eliminar una nota de un alumno
+     * @param nombre Nombre del alumno
+     * @param posicion Posición de la nota a eliminar
+     * @return nota eliminada
+     * @throws IllegalArgumentException Alumno no existente en sistema
+     * @throws ArrayIndexOutOfBoundsException Nota no existente en la lista del alumno
+     */
+    public static float eliminarNotaAlumno(String nombre, int posicion) {
+        if (!notasAlumnos.containsKey(nombre)) {
+            throw new IllegalArgumentException ("El alumno " + nombre + " no existe en el sistema.");
+        } else if (notasAlumnos.get(nombre).size() <= (posicion)) {
+            throw new ArrayIndexOutOfBoundsException("No existe la posición " + posicion +  " en la lista de notas.");
+        }
+        return notasAlumnos.get(nombre).remove(posicion);
+    }
+
+    /**
+     * Función para modificar una nota de un alumno
+     * @param nombre Nombre del alumno
+     * @param posicion Posición de la nota a modificar
+     * @param nuevaNota Nota a sustituir por un valor anterior
+     * @return valor nota antes de modificación
+     * @throws IllegalArgumentException Alumno no existente en sistema
+     * @throws ArrayIndexOutOfBoundsException Nota no existente en la lista del alumno
+     */
+    public static float modificarNotaAlumno(String nombre, int posicion, float nuevaNota) {
+        if (!notasAlumnos.containsKey(nombre)) {
+            throw new IllegalArgumentException ("El alumno " + nombre + " no existe en el sistema.");
+        } else if (notasAlumnos.get(nombre).size() <= (posicion)) {
+            throw new ArrayIndexOutOfBoundsException("No existe la posición " + posicion +  " en la lista de notas.");
+        }
+        return notasAlumnos.get(nombre).set(posicion, nuevaNota);
+    }
+
+    /**
+     * Función para listar a los alumnos con la media de sus notas
+     * @return HashMap de todos los alumnos con su nota media
+     */
+    public static HashMap<String, Float> consultarMediasPorAlumno() {
+        HashMap<String, Float> mediaNotas = new HashMap<>();
+        for (String alumno : notasAlumnos.keySet()) {
+            ArrayList<Float> notas = notasAlumnos.get(alumno);
+            float total = 0;
+            for (float nota : notas) {
+                total += nota;
+            }
+            mediaNotas.put(alumno, total/notas.size());
+        }
+        return mediaNotas;
     }
 
     /**
@@ -109,8 +164,10 @@ public class Gestor {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int opcion = 0;
+        int posicion;
+        float nota;
 
-        while (opcion != 5) {
+        while (opcion != 8) {
             System.out.println(menu());
             opcion = sc.nextInt();
             sc.nextLine();
@@ -142,7 +199,7 @@ public class Gestor {
                     System.out.println("Inserta el nombre del alumno:");
                     nombre = sc.nextLine();
                     System.out.println("Inserta la nota del alumno.");
-                    float nota = sc.nextFloat();
+                    nota = sc.nextFloat();
                     sc.nextLine();
                     try {
                         System.out.println(anadirNota (nombre, nota));
@@ -151,6 +208,33 @@ public class Gestor {
                     }
                     break;
                 case 4:
+                    System.out.println("Inserta el nombre del alumno:");
+                    nombre = sc.nextLine();
+                    System.out.println("Inserta la posición de la nota que quieres eliminar:");
+                    posicion = sc.nextInt();
+                    sc.nextLine();
+                    System.out.println("Inserta la nota del alumno:");
+                    nota = sc.nextFloat();
+                    sc.nextLine();
+                    try {
+                        System.out.println("Se ha modificado la nota " + modificarNotaAlumno(nombre, posicion, nota) + " por la nota " + nota + ".");
+                    } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                case 5:
+                    System.out.println("Inserta el nombre del alumno:");
+                    nombre = sc.nextLine();
+                    System.out.println("Inserta la posición de la nota que quieres eliminar:");
+                    posicion = sc.nextInt();
+                    sc.nextLine();
+                    try {
+                        System.out.println("Se ha eliminado la nota " + eliminarNotaAlumno(nombre, posicion) + ".");
+                    } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                case 6:
                     System.out.println("Inserta el nombre del alumno: ");
                     nombre = sc.nextLine();
                     try {
@@ -159,6 +243,11 @@ public class Gestor {
                         System.err.println(ie.getMessage());
                     }
                     break;
+                case 7:
+                    HashMap<String, Float> mediaNotas = consultarMediasPorAlumno();
+                    for (String alumno : mediaNotas.keySet()) {
+                        System.out.println("El alumno " + alumno + " tiene una media de " + mediaNotas.get(alumno) + ".");
+                    }
             }
         }
 

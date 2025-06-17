@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GestorTest {
 
     @BeforeEach
-    public void configuracionTest() {
+    public void configuracion() {
         String nombre = "Jordi";
         ArrayList<Float> notas = new ArrayList<>();
         notas.add(10f);
@@ -19,18 +20,21 @@ class GestorTest {
     }
 
     @Test
-    public void menuTest(){
+    public void menu(){
         String menu = "Escoge una opción:\n" +
                 "1. Añadir un alumno.\n" +
                 "2. Eliminar alumno.\n" +
                 "3. Añadir una nota.\n" +
-                "4. Consultar notas alumno.\n" +
-                "5. Salir.";
+                "4. Modificar una nota.\n" +
+                "5. Eliminar una nota.\n" +
+                "6. Consultar notas alumno.\n" +
+                "7. Consultar medias alumnos.\n" +
+                "8. Salir.";
         assertEquals(menu, Gestor.menu());
     }
 
     @Test
-    public void anadirAlumnoCorrectamenteTest() {
+    public void anadirAlumnoCorrectamente() {
         String resultado = "Alumno Joel añadido con éxito.";
         String nombre = "Joel";
         ArrayList<Float> notas = new ArrayList<>();
@@ -54,7 +58,7 @@ class GestorTest {
 //    }
 
     @Test
-    public void anadirNotaCorrectamenteTest() {
+    public void anadirNotaCorrectamente() {
         String nombre = "Kenneth";
         ArrayList<Float> notas = new ArrayList<>();
         notas.add(10f);
@@ -66,19 +70,42 @@ class GestorTest {
     }
 
     @Test
-    public void mostrarNotasAlumnoTest() {
+    public void mostrarNotasAlumno() {
         String resultado = "Notas del alumno Jordi:10.0 10.0 10.0 ";
         assertEquals(resultado, Gestor.mostrarNotas("Jordi"));
     }
 
     @Test
-    public void eliminarAlumnoCorrectamenteTest() {
-        String resultado = "Almuno Jordi eliminado correctamente.";
+    public void mostrarNotasAlumnoNoExistente() {
+        assertThrows(IllegalArgumentException.class, () -> Gestor.mostrarNotas("Victor"));
+    }
+
+    @Test
+    public void eliminarAlumnoCorrectamente() {
+        String resultado = "Alumno Jordi eliminado correctamente.";
         assertEquals(resultado, Gestor.eliminarAlumno("Jordi"));
     }
 
+    @Test
+    public void eliminarNotaAlumnoCorrectamente() {
+        float resultado = 10f;
+        assertEquals(resultado, Gestor.eliminarNotaAlumno("Jordi", 0));
+    }
+
+    @Test
+    public void eliminarNotaAlumnoNoExistente() {
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Gestor.eliminarNotaAlumno("Jordi", 3));
+    }
+
+    @Test
+    public void consultarMediasPorAlumno() {
+        HashMap<String, Float> resultado = new HashMap<>();
+        resultado.put("Jordi", 10f);
+        assertEquals(resultado, Gestor.consultarMediasPorAlumno());
+    }
+
     @AfterEach
-    public void cerrarConfiguracionesTest() {
+    public void cerrarConfiguraciones() {
         Gestor.notasAlumnos.clear();
     }
 
