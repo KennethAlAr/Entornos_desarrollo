@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/20250930Clase.iml" filepath="$PROJECT_DIR$/.idea/20250930Clase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SoftNova/SoftNova.iml" filepath="$PROJECT_DIR$/SoftNova/SoftNova.iml" />
+    </modules>
+  </component>
+</project>
