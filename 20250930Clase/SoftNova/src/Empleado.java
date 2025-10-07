@@ -15,4 +15,15 @@ public class Empleado {
         this.rol = rol;
     }
 
+    public String getDni() {
+        return dni;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
 }

@@ -59,4 +59,24 @@ public class Tarea {
     public Tarea getPadre() {
         return padre;
     }
+
+    public String getListaTareasStr() {
+        String listaTareasStr = "";
+        listaTareasStr += "Lista de subtareas de la tarea " + titulo + ":\n";
+        for (Tarea t: listaSubtareas){
+            listaTareasStr += t.getTitulo() + "\n";
+        }
+        return listaTareasStr;
+    }
+
+    @Override
+    public String toString() {
+        return "Tarea{" +
+                "titulo='" + titulo + '\'' +
+                ", horasEstimadas=" + horasEstimadas +
+                ", estado=" + estado +
+                getListaTareasStr() +
+                ", padre=" + padre.getTitulo() +
+                '}';
+    }
 }

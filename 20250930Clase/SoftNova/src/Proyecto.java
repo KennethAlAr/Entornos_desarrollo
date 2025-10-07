@@ -24,11 +24,53 @@ public class Proyecto {
     }
 
     public void asignarEquipo(Equipo equipo) {
-        this.equipo = equipo;
+        if (equipo.comprobarValidezEquipo()) this.equipo = equipo;
+    }
+
+    public String getListaTareasStr() {
+        String listaTareasStr = "";
+        listaTareasStr += "Lista de tareas del proyecto " + nombre + ":\n";
+        for (Tarea t: listaTareas){
+            listaTareasStr += t.getTitulo() + "\n";
+        }
+        return listaTareasStr;
     }
 
     public List<Tarea> getListaTareas() {
         return Collections.unmodifiableList(listaTareas);
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public int getPresupuesto() {
+        return presupuesto;
+    }
+
+    public Equipo getEquipo() {
+        return equipo;
+    }
+
+    @Override
+    public String toString() {
+        String listaTareasStr = "";
+        listaTareasStr += "Lista de tareas del proyecto " + nombre + ":\n";
+        for (Tarea t: listaTareas){
+            listaTareasStr += t.getTitulo() + "\n";
+        }
+        String nombreEquipo = "No hay equipo asignado";
+
+        if(equipo != null) nombreEquipo = equipo.getNombre();
+        return "Detalles del proyecto:\n" +
+                "nombre='" + nombre + '\'' + "\n" +
+                "fechaInicio=" + fechaInicio + "\n" +
+                "presupuesto=" + presupuesto + "\n" +
+                getListaTareasStr() + "\n" +
+                "equipo=" + nombreEquipo;
+    }
 }
